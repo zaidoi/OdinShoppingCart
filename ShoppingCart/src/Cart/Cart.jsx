@@ -1,8 +1,12 @@
 import React from 'react'
+import Shop from '../Shop/Shop'
 
-function Cart() {
+function Cart({itemImg,itemTitle,itemPrice,itemQuatity}) {
   return (
-    <div>Cart</div>
+   <div>
+    <h1>{itemTitle}</h1>
+   <img src={itemImg} alt="" />
+   </div>
   )
 }
 
