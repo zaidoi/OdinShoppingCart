@@ -7,10 +7,10 @@ function Header() {
   return (
     <div className="bg-red-500">
       <div className="flex justify-between items-center py-4 px-6">
-        {/* Logo / Title */}
+       
         <h1 className="text-2xl font-bold">Shopping Destination</h1>
 
-        {/* Desktop Menu */}
+        
         <ul className="hidden md:flex gap-10">
           <li>
             <NavLink
