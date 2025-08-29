@@ -1,50 +1,64 @@
-import React, { useEffect, useState } from 'react'
-import { useOutletContext } from 'react-router-dom'
+import React, { useEffect, useState } from "react";
+import { useOutletContext } from "react-router-dom";
 
 function Cart() {
-  const {cartItems,setItemsCart,totalState} = useOutletContext()
-const[totalValue,setTotalValue] = useState(0)
+  const { cartItems, setItemsCart } = useOutletContext();
+  const [totalValue, setTotalValue] = useState(0);
 
-useEffect(() => {
-  let sum = 0
-  for(let i = 0 ; i < cartItems.length; i++){
-    const item = cartItems[i]
-    const value = item.price * item.qty
-    sum+= value
-  }
-  setTotalValue(sum)
-},[cartItems])
+  useEffect(() => {
+    let sum = cartItems.reduce((acc, item) => acc + item.price * item.qty, 0);
+    setTotalValue(sum);
+  }, [cartItems]);
 
-const deleteItem = (e) =>{
-  console.log(e);
-  
-const updatedCart = cartItems.filter((item) => item.id !== e.id)
-setItemsCart(updatedCart)
-}
+  const deleteItem = (item) => {
+    const updatedCart = cartItems.filter((cartItem) => cartItem.id !== item.id);
+    setItemsCart(updatedCart);
+  };
 
-
-  console.log(cartItems);
   return (
-   <div >
-    {cartItems.map((item) => (
-   <div className='p-5 bg-white flex'>
-    <div> 
-      <img src={item.image} alt={item.title} width={120}/>
+    <div className="p-5">
+      {cartItems.length > 0 ? (
+        <div className="flex flex-col gap-5">
+          {cartItems.map((item) => (
+            <div
+              key={item.id}
+              className="bg-white shadow-lg rounded-xl flex flex-col md:flex-row items-center md:items-start gap-5 p-5 border border-gray-300"
+            >
+             
+              <img
+                src={item.image}
+                alt={item.title}
+                className="w-32 h-32 object-contain"
+              />
+
+             
+              <div className="flex flex-col gap-3 text-center md:text-left">
+                <h1 className="text-xl font-semibold">{item.title}</h1>
+                <h2 className="text-red-500 font-bold text-lg">${item.price}</h2>
+                <h2 className="text-gray-600">Qty: {item.qty}</h2>
+
+                <button
+                  onClick={() => deleteItem(item)}
+                  className="bg-red-500 text-white px-4 py-2 rounded-lg transition hover:bg-black"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          ))}
+
+         
+          <h1 className="text-2xl font-bold bg-white shadow-md px-6 py-3 rounded-lg self-end">
+            Total : ${Math.floor(totalValue)}
+          </h1>
+        </div>
+      ) : (
+        <h1 className="text-2xl text-center text-gray-600 bg-white shadow-md px-6 py-3 rounded-lg">
+          Cart is Empty
+        </h1>
+      )}
     </div>
-    <div className='mt- p-4 flex flex-col gap-3'>
-      <h1 className='text-2xl'>{item.title}</h1>
-      <h2>${item.price}</h2> 
-      <h2>Qty: {item.qty}</h2>
-      <button className='self-start bg-red-500 text-white px-2 py-1 rounded-lg' onClick={()=>deleteItem(item)}>Delete</button>
-    </div>
-   </div>
-    ))}
-   
-   {totalState ?  (
-    <h1 className='text-3xl outline-1  bg-white px-5 py-3'>Total : {Math.floor(totalValue)}</h1>
-   ):(<h1 className='text-3xl outline-1 mt-50 text-center  bg-white px-5 py-3'>Cart is Empty</h1>)}
-   </div>
-  )
+  );
 }
 
-export default Cart
+export default Cart;

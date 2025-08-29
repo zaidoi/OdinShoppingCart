@@ -9,7 +9,7 @@ function Layout() {
 const data = useLoaderData()
 const [productsData,setProductsData] = useState([])
 const [cartItems,setItemsCart] = useState([])
-const [totalState,setTotalState] = useState(false)
+
 
 
 useEffect(()=>{
@@ -25,7 +25,7 @@ useEffect(()=>{
       <div className="flex flex-col min-h-screen">
         <Header />
         <main className="flex-grow">
-          <Outlet context={{productsData,setProductsData,cartItems,setItemsCart,totalState,setTotalState}} />
+          <Outlet context={{productsData,setProductsData,cartItems,setItemsCart}} />
         </main>
         <Footer />
       </div>
