@@ -1,39 +1,33 @@
-import React, { useEffect } from "react";
-import { useLoaderData } from "react-router-dom";
-import { useState } from "react";
-import Cart from "../Cart/Cart";
+
+import { useOutletContext } from "react-router-dom";
+
 
 function Shop() {
-  const data = useLoaderData();
-  console.log(data);
-  
-  const [items,setItems] = useState(data)
-  
-  
-  useEffect(() => {
-    const newData = data.map((item)=>{
-     return {...item , qty: item.qty++} 
-    })
-    setItems(newData)
-  },[data])
+ const {productsData,setProductsData,setItemsCart,setTotalState,cartItems} = useOutletContext()
 
-  const handleItemQuantity = (id, e) => {
-    setValueOfItem(e.target.value);
-    console.log(e.target.value);
+
+  const handleItemQuantity = (id, newQty) => {
+    setProductsData(prev =>
+      prev.map(item => item.id === id ? {...item , qty:newQty} : item)
+    )
+    console.log("working");
+    
   };
 
-  const onClickItem = (props) => {
-    <Cart
-      itemImg={props.image}
-      itemTitle={props.title}
-      itemPrice={props.price}
-      itemQuantity={props.qty}
-    />;
+  const onClickItem = (item) => {
+   for(let i = 0; i < cartItems.length; i++){
+    if(item.qty === cartItems[i].qty){
+      return
+    }
+   }
+
+    setItemsCart(prev => [...prev,item])
+    setTotalState(true)
   };
 
   return (
     <div className="flex flex-wrap gap-5 p-5 bg-white">
-      {items.map((item) => (
+      {productsData.map((item) => (
         <div
           key={item.id}
           className=" flex-1 min-w-[250px] max-w-[300px] card bg-white w-60 p-5 flex flex-col gap-3 rounded-2xl shadow-lg border border-black 
@@ -52,8 +46,8 @@ function Shop() {
 
           <div className="flex justify-between items-center">
             <input
-              value={item.qty}
-              onChange={(e) => handleItemQuantity(e)}
+               value={item.qty}
+               onChange={(e) => handleItemQuantity(item.id,e.target.value)}
               type="number"
               className="border border-black rounded-lg py-1 px-2 w-16 h-10 text-center 
                          focus:outline-none focus:ring-2 focus:ring-red-500"

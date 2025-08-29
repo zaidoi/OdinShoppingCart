@@ -17,9 +17,9 @@ import { allProducts } from "./Api";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<Layout />}>
+    <Route path="/" loader={allProducts} element={<Layout />}>
       <Route path="" element={<Home />} />
-      <Route loader={allProducts} path="shop" element={<Shop  />} />
+      <Route  path="shop" element={<Shop  />} />
       <Route path="cart" element={<Cart />} />
     </Route>
   )
